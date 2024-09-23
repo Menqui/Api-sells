@@ -7,31 +7,46 @@ import DeleteProductService from "../services/DeleteProductService";
 
 export default  class ProductController{
   public async index(request: Request, response:  Response):Promise<Response>{ //metodo para listagem dos produtos
+     try {
       const listProducts = new ListProductService();
 
       const products = await listProducts.execute();
 
-      return response.json(products);
+        return response.json(products);
+     } catch (error) {
+        console.log(error);
+        return response.status(500).json({error:'Internal server error!'});
+     }
   }
   public async show(request: Request, response:  Response):Promise<Response>{ //metodo para exibir um unico produto escolhido
-      const { id } = request.params;
-      const showProduct = new ShowProductService();
+      try {
+        const { id } = request.params;
+        const showProduct = new ShowProductService();
 
-      const product = await showProduct.execute({id});
+        const product = await showProduct.execute({id});
 
-      return response.json(product);
+        return response.json(product)
+      } catch (error) {
+        console.log(error);
+        return response.status(500).json({error:'Internal server error!'});
+      }
   }
   public async create(request: Request, response:  Response):Promise<Response>{//metodo para criar um produto
-     const {name,price,quantity} = request.body;
-     const createProduct = new CreateProductService();
+    try {
+      const {name,price,quantity} = request.body;
+      const createProduct = new CreateProductService();
 
-     const product = await createProduct.execute({
-      name,
-      price,
-      quantity
-    });
+      const product = await createProduct.execute({
+       name,
+       price,
+       quantity
+     });
 
-    return response.json(product)
+     return response.json(product)
+    } catch (error) {
+       console.log(error);
+       return response.status(500).json({error:'Internal server error!'});
+    }
   }
   public async update(request:Request,response:Response):Promise<Response>{//metodo para atualizar um produto
     try {
@@ -54,11 +69,16 @@ export default  class ProductController{
     }
   }
   public async delete(request:Request , response:Response):Promise<Response>{ //metodo para deletar um produto
-     const {id} = request.params;
-     const deleteProduct = new DeleteProductService();
+     try {
+      const {id} = request.params;
+      const deleteProduct = new DeleteProductService();
 
-     await deleteProduct.execute({id});
+      await deleteProduct.execute({id});
 
-     return response.json('Produto deletado com sucesso!');
+      return response.json('Produto deletado com sucesso!');
+     } catch (error) {
+        console.log(error);
+        return response.status(500).json({error:'Internal server error!'});
+     }
   }
 }

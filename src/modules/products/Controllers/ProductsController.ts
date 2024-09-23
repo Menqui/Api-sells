@@ -11,7 +11,7 @@ export default  class ProductController{
       const listProducts = new ListProductService();
 
       const products = await listProducts.execute();
-
+        console.log(products)
         return response.json(products);
      } catch (error) {
         console.log(error);
@@ -33,13 +33,14 @@ export default  class ProductController{
   }
   public async create(request: Request, response:  Response):Promise<Response>{//metodo para criar um produto
     try {
-      const {name,price,quantity} = request.body;
+      const {name,price,description,quantity} = request.body;
       const createProduct = new CreateProductService();
 
       const product = await createProduct.execute({
        name,
        price,
-       quantity
+       description,
+       quantity,
      });
 
      return response.json(product)
@@ -51,7 +52,7 @@ export default  class ProductController{
   public async update(request:Request,response:Response):Promise<Response>{//metodo para atualizar um produto
     try {
       const {id} = request.params;
-      const {name,price,quantity} = request.body;
+      const {name,price,description,quantity} = request.body;
 
       const updateProduct = new UpdateProductService();
 
@@ -59,6 +60,7 @@ export default  class ProductController{
         id,
         name,
         price,
+        description,
         quantity,
       });
 

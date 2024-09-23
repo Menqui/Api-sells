@@ -6,11 +6,12 @@ import AppError from "@shared/errors/AppError";
 interface IRequest{
   name:string,
   price:number,
+  description:string,
   quantity:number,
 }
 
 class CreateProductService{
-  public async execute({name,price,quantity}:IRequest):Promise<Product>{
+  public async execute({name,price,description,quantity}:IRequest):Promise<Product>{
      const productsRepository = getCustomRepository(ProductRepository);
      const productExists = await productsRepository.findByName(name); //VERIFICA SE O PRODUTO JÁ EXISTE COM AQUELE NOME NO BANCO
 
@@ -20,6 +21,7 @@ class CreateProductService{
      const product = productsRepository.create({
       name,
       price,
+      description,
       quantity,
      });
      await productsRepository.save(product);

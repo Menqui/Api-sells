@@ -26,6 +26,7 @@ productsRouter.post('/',
     [Segments.BODY]:{
       name: Joi.string().required(),
       price:Joi.number().precision(2).required(),
+      description:Joi.string().required(),
       quantity:Joi.number().required(),
 
     }
@@ -40,6 +41,7 @@ productsRouter.put('/:id',
     [Segments.BODY]:{
       name:Joi.string().required(),
       price:Joi.number().precision(2).required(),
+      description:Joi.string().required(),
       quantity:Joi.number().required(),
     }
   }),

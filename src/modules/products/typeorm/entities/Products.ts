@@ -8,7 +8,8 @@ class Product{
   @Column()
   name:string;
 
-  
+  @Column({ type: 'varchar', nullable: true }) // Definir explicitamente como 'varchar'
+  description: string | null;  // Permitir que seja null
 
   @Column('decimal')
   price:number;

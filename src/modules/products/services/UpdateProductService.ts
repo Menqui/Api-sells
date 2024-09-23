@@ -8,11 +8,12 @@ interface IRequest{
   id: string;
   name:string;
   price:number;
+  description: string 
   quantity:number;
 }
 
 class UpdateProductService{
-  public async execute({id,name,price,quantity}:IRequest) :Promise<Product>{
+  public async execute({id,name,price,description,quantity}:IRequest) :Promise<Product>{
     const productsRepository = getCustomRepository(ProductRepository);
     const product = await productsRepository.findOne(id);
     const productExists = await productsRepository.findByName(name); //VERIFICA SE O PRODUTO JÁ EXISTE COM AQUELE NOME NO BANCO
@@ -26,6 +27,7 @@ class UpdateProductService{
     }
     product.name = name;
     product.price = price;
+    product.description = description;
     product.quantity = quantity;
 
     await productsRepository.save(product);

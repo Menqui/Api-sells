@@ -2,6 +2,7 @@ import { User } from '../typeorm/entities/User';
 import { getCustomRepository } from "typeorm";
 import UserRepository from "../typeorm/repositories/usersRepository";
 import AppError from "@shared/errors/AppError";
+import { hash } from 'bcryptjs';
 
 
 interface Irequest {
@@ -13,15 +14,17 @@ interface Irequest {
 class CreateUserService{
   public async execute({name,email,password}:Irequest):Promise<User>{
      const userRepository = getCustomRepository(UserRepository);
-     const emailExist =await userRepository.findByemail(email);
+     const emailExist =await userRepository.findByEmail(email);
 
      if(emailExist){ //verifica se já existe e-mail cadastrado na plataforma
       throw new AppError('There is already an user with this e-mail!');
      }
-      const user = userRepository.create({
+     const hashedPassword = await hash(password,8);//criptografa a senha do usuário
+
+     const user = userRepository.create({
         name,
         email,
-        password,
+        password : hashedPassword,
       });
 
       console.log(user)

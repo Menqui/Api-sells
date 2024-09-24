@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import ListUserService from "../services/ListUserService";
 import CreateUserService from "../services/CreateUserService";
+import AppError from "@shared/errors/AppError";
 
 export default class UserController {
   public async index(request:Request, response:Response):Promise<Response>{
@@ -11,7 +12,7 @@ export default class UserController {
         return response.json(users);
       } catch (error) {
         console.log(error);
-        return  response.status(500).json({error:'Internal server error!'});
+        return response.status(500)
       }
   }
 
@@ -26,11 +27,11 @@ export default class UserController {
         email,
         password,
       });
-      console.log(user)
+      
       return response.json(user);
      } catch (error) {
          console.log(error);
-         return response.status(500).json({error:'Internal server error!'});
+         return response.status(400).json(error)
      }
   }
 }

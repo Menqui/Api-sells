@@ -3,6 +3,8 @@ import { getCustomRepository } from "typeorm";
 import UserRepository from "../typeorm/repositories/usersRepository";
 import AppError from "@shared/errors/AppError";
 import { compare, hash } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+import authConfig from '@config/auth';
 
 
 interface Irequest {
@@ -10,14 +12,14 @@ interface Irequest {
   password:string;
 }
 
-/*interface Iresponse {
+interface Iresponse {
   user : User;
-//token :
+  token : string;
 }
-*/
+
 
 class CreateSessionsService{
-  public async execute({email,password}:Irequest):Promise<Irequest>{
+  public async execute({email,password}:Irequest):Promise<Iresponse>{
      const userRepository = getCustomRepository(UserRepository);
      const user =await userRepository.findByEmail(email);
 
@@ -29,10 +31,17 @@ class CreateSessionsService{
      if(!passwordConfirmed){ //se a senha não for compativel
       throw new AppError('Incorrect e-mail/password');
      }
+     const token = sign({},authConfig.jwt.secret,{
+      subject:user.id,
+      expiresIn:authConfig.jwt.expiresIn,
+     });
 
      await userRepository.save(user);
 
-     return user;
+     return {
+      user,
+      token
+     };
   }
 
 }

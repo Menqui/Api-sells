@@ -27,7 +27,7 @@ export default class UserController {
         email,
         password,
       });
-      
+
       return response.json(user);
      } catch (error) {
          console.log(error);

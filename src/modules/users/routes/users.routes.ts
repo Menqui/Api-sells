@@ -1,6 +1,7 @@
 import { Router} from 'express';
 import { celebrate,Joi,Segments} from 'celebrate';
 import UserController from '../controllers/UsersController';
+import isAuthenticated from '../../../shared/http/middlewares/isAuthenticated';
 
 const usersRouter = Router();
 const userController = new UserController();
@@ -13,7 +14,7 @@ const userController = new UserController();
 //----------------------------------- ROTAS ---------------------------------------
 
 //  ROTA DE LIST
-usersRouter.get('/',userController.index);
+usersRouter.get('/',isAuthenticated,userController.index);
 
 //  ROTA DE GET - CREATE
 usersRouter.post('/',

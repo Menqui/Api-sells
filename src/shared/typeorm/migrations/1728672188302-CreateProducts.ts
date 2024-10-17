@@ -18,8 +18,8 @@ export class CreateProducts1725469879253 implements MigrationInterface {
                     type: 'varchar',
                 },
                 {
-                    name:'description',
-                    type:'varchar',
+                    name: 'description',
+                    type: 'varchar',
                     isNullable: true, // Permitir null
                 },
                 {

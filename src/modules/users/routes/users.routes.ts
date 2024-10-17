@@ -38,6 +38,6 @@ usersRouter.patch(
   isAuthenticated,
   upload.single('avatar'),
   usersAvatarController.update,
-)
+);
 
 export default usersRouter;
